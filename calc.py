@@ -10,7 +10,9 @@ operation_match = re.compile(operation_pattern)
 class HistoryObject():
     def __init__(self, operation, args, result):
         self.operation = operation
-        self.args = args
+        self.args = []
+        for arg in args:
+            self.args.append(str(arg))
         self.result = result
     def __str__(self):
         return 'Operation "' + str(self.operation) + '" was called with [' + str(' '.join(self.args)) + '] as args with result of ' + str(self.result)
@@ -33,6 +35,7 @@ def main():
         try:
             user_input = raw_input()
             operation, args = parse(user_input)
+            args = replace_args(args)
             result = call_operation(operation, args)
         except ParseError as pe:
             print pe.value
@@ -77,7 +80,6 @@ def replace_args(args):
 
 def call_operation(operation, args):
     global operations
-    args = replace_args(args)
     if operation in operations.keys():
         op = operations[operation]
         result = op.function(args)
