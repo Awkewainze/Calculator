@@ -6,6 +6,7 @@ operations = {}
 history = []
 operation_pattern = '(?P<Operation>^[\\w?]+)\\s*(?P<Args>[\\.\\s\\w\\$]*\\S)?(?:\\s*)'
 operation_match = re.compile(operation_pattern)
+prefix_char = '>'
 
 class HistoryObject():
     def __init__(self, operation, args, result):
@@ -28,11 +29,13 @@ class Operation():
 
 def main():
     global history
+    global prefix_char
     print "Enter operations as such 'operation param1 param2 param3 .....'"
     print "Use '?' to list availible operations"
     print "Use $n to replace an argument with the result from the n-th history item"
     while(True):
         try:
+            print(prefix_char),
             user_input = raw_input()
             operation, args = parse(user_input)
             args = replace_args(args)
@@ -126,6 +129,7 @@ add_operation('hist', print_history, helptext="History: Lists the history, ignor
 def clear_history(args):
     global history
     history = []
+    return 'History Cleared'
 add_operation('clh', clear_history, helptext="Clear history: Clears out your history and saved results", save_history=False)
 
 def clear_screen(args):
