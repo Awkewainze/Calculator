@@ -207,4 +207,21 @@ def div(args):
     return value
 add_operation('div', div, helptext="Divides params 2..n from the 1st param")
 
+def my_pow(args):
+    check_args(args)
+    value = 0
+    first = True
+    for arg in args:
+        try:
+            arg_value = float(arg)
+            if first:
+                first = False
+                value = arg_value
+            else:
+                value = value ** arg_value
+        except ValueError:
+            raise ParseError('Value provided was not an int or float')
+    return value
+add_operation('pow', my_pow, helptext="Power Rangers go!!!!")
+
 main()
